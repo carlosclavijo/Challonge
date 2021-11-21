@@ -26,3 +26,11 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 Route::post('/user', [\App\Http\Controllers\UserController::class, 'store']);
+
+//Torneo
+Route::get('/torneos', [TorneoController::class, 'index']);
+Route::get('/torneos/{id}', [TorneoController::class, 'show']);
+Route::get('/torneos', [TorneoController::class, 'index']);
+Route::post('/torneos', [TorneoController::class, 'store']);
+Route::put('/torneos/{id}', [TorneoController::class, 'update']);
+Route::delete('/torneos', [TorneoController::class, 'destroy']);
