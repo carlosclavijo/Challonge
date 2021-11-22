@@ -21,9 +21,9 @@ class CreateTorneosTable extends Migration
             $table->dateTime("fechaHoraInicio");
             $table->dateTime("fechaHoraFin");
             $table->integer("estado")->comment("0 = Creado, 1 = Registro abierto, 2 = iniciado, 3 = finalizado");
-            $table->integer("puntuacionVictoria");
-            $table->integer("puntuacionDerrota");
-            $table->integer("puntuacionEmpate");
+            $table->float("puntuacionVictoria");
+            $table->float("puntuacionDerrota");
+            $table->float("puntuacionEmpate");
             $table->bigInteger("idCreador")->unsigned();
             $table->foreign("idCreador")->references("id")->on("users")->onDelete("cascade");
             $table->timestamps();

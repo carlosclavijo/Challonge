@@ -23,8 +23,8 @@ class RondaController extends Controller
     {
         $validator = \Validator::make($request->json()->all(), [
             'idTorneo' => ['required', 'integer'],
-            'fechaHoraInicio' => ['required', 'datetime'],
-            'fechaHoraFin' => ['required', 'datetime'],
+            'fechaHoraInicio' => ['required', 'date'],
+            'fechaHoraFin' => ['required', 'date'],
             'nroRonda' => ['required', 'integer']
         ]);
         if($validator->fails()) {

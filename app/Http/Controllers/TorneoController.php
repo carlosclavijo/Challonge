@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Torneo;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
 
 class TorneoController extends Controller
@@ -24,8 +25,8 @@ class TorneoController extends Controller
             'nombre' => ['required', 'string'],
             'videojuego' => ['required', 'string'],
             'modalidad' => ['required', 'integer'],
-            'fechaHoraInicio' => ['required', 'datetime'],
-            'fechaHoraFin' => ['required', 'datetime'],
+            'fechaHoraInicio' => ['required', 'date'],
+            'fechaHoraFin' => ['required', 'date'],
             'estado' => ['required', 'integer'],
             'puntuacionVictoria' => ['required', 'integer'],
             'puntuacionEmpate' => ['required', 'integer'],
@@ -70,7 +71,7 @@ class TorneoController extends Controller
     public function search($valor)
     {
         try {
-            $query = Torneo::where('nombre', 'like', '%'.$valor.'%');
+            $query = Torneo::where('nombre', 'like', '%'.$valor.'%')->get();
             if ($query == null) {
                 return response()->json(['Response' => false, 'Message' => 'No se encontraron']);
             }

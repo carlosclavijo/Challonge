@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Partida;
 use Illuminate\Http\Request;
 
-class PartidaContrller extends Controller
+class PartidaController extends Controller
 {
     public function index()
     {

@@ -17,6 +17,8 @@ class CreatePartidasTable extends Migration
             $table->id();
             $table->bigInteger("idTorneo")->unsigned();
             $table->foreign("idTorneo")->references("id")->on("torneos")->onDelete("cascade");
+            $table->bigInteger("idRonda")->unsigned();
+            $table->foreign("idRonda")->references("id")->on("rondas")->onDelete("cascade");
             $table->bigInteger("idJugador1")->unsigned();
             $table->foreign("idJugador1")->references("id")->on("users")->onDelete("cascade");
             $table->bigInteger("idJugador2")->unsigned();

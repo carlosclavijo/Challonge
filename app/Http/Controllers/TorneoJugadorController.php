@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TorneoJugador;
+use App\Models\TorneoHasJugador;
 use Illuminate\Http\Request;
 
 class TorneoJugadorController extends Controller
@@ -10,26 +10,26 @@ class TorneoJugadorController extends Controller
     public function index()
     {
         try {
-            $listaTorneoJugadors = TorneoJugador::all();
+            $listaTorneoJugadors = TorneoHasJugador::all();
         }
         catch (\Exception $e) {
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
         }
-        return response()->json(['Response' => true, 'TorneoJugadors' => $listaTorneoJugadors]);
+        return response()->json(['Response' => true, 'TorneoHasJugadors' => $listaTorneoJugadors]);
     }
 
     public function store(Request $request)
     {
         $validator = \Validator::make($request->json()->all(), [
-            'idJugador' => ['required', 'integer'],
-            'idTorneo' => ['required', 'integer']
+            'idTorneo' => ['required', 'integer'],
+            'idUser' => ['required', 'integer']
         ]);
         if($validator->fails()) {
             return response()->json(["Response" => false, "validator" => $validator->messages()]);
         }
-        $objTorneoJugador = new TorneoJugador();
+        $objTorneoJugador = new TorneoHasJugador();
         $objTorneoJugador->idTorneo = $request->json('idTorneo');
-        $objTorneoJugador->idJugador =  $request->json('idJugador');
+        $objTorneoJugador->idUser =  $request->json('idUser');
         try {
             $objTorneoJugador->save();
         } catch (\Exception $e) {
@@ -41,7 +41,7 @@ class TorneoJugadorController extends Controller
     public function show($idTorneoJugador)
     {
         try {
-            $objTorneoJugador = TorneoJugador::find($idTorneoJugador);
+            $objTorneoJugador = TorneoHasJugador::find($idTorneoJugador);
             if($objTorneoJugador == null) {
                 return response()->json(['Response' => false, 'Message' => 'Error, TorneoJugador no encontrado']);
             }
@@ -52,7 +52,7 @@ class TorneoJugadorController extends Controller
     }
 
     public function update(Request $request, $idTorneoJugador) {
-        $objTorneoJugador = TorneoJugador::find($idTorneoJugador);
+        $objTorneoJugador = TorneoHasJugador::find($idTorneoJugador);
         if($objTorneoJugador == null) {
             return response()->json(['Response' => false, 'Message' => 'Error, TorneoJugador no encontrado']);
         }
@@ -71,7 +71,7 @@ class TorneoJugadorController extends Controller
     }
 
     public function destroy($idTorneoJugador) {
-        $objTorneoJugador = TorneoJugador::find($idTorneoJugador);
+        $objTorneoJugador = TorneoHasJugador::find($idTorneoJugador);
         if($objTorneoJugador == null) {
             return response()->json(['Response' => false, 'Message' => 'Error, TorneoJugador no encontrado']);
         }
