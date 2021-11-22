@@ -15,7 +15,7 @@ class PartidaController extends Controller
         catch (\Exception $e) {
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
         }
-        return response()->json(['Response' => true, 'Partidas' => $listaPartidas]);
+        return response()->json(['Response' => true, 'Length' => count($listaPartidas), 'Partidas' => $listaPartidas]);
     }
 
     public function store(Request $request)
@@ -25,7 +25,8 @@ class PartidaController extends Controller
             'idRonda' => ['required', 'integer'],
             'idJugador1' => ['required', 'integer'],
             'idJugador2' => ['required', 'integer'],
-            'idGanador' => ['required', 'integer']
+            'puntosJugador1' => ['required', 'numeric'],
+            'puntosJugador2' => ['required', 'numeric']
         ]);
         if($validator->fails()) {
             return response()->json(["Response" => false, "validator" => $validator->messages()]);
@@ -35,13 +36,14 @@ class PartidaController extends Controller
         $objPartida->idRonda =  $request->json('idRonda');
         $objPartida->idJugador1 =  $request->json('idJugador1');
         $objPartida->idJugador2 =  $request->json('idJugador2');
-        $objPartida->idGanador =  $request->json('idGanador');
+        $objPartida->puntosJugador1 =  $request->json('puntosJugador1');
+        $objPartida->puntosJugador2 =  $request->json('puntosJugador2');
         try {
             $objPartida->save();
         } catch (\Exception $e) {
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
         }
-        return response()->json(['Response' => true, 'Partidas' => $objPartida]);
+        return response()->json(['Response' => true,  'id' => $objPartida->id, 'Partidas' => $objPartida]);
     }
 
     public function show($idPartida)
@@ -74,8 +76,11 @@ class PartidaController extends Controller
         if($request->json('idJugador2') != null) {
             $objPartida->idJugador2 = $request->json('idJugador2');
         }
-        if($request->json('idGanador') != null) {
-            $objPartida->idGanador = $request->json('idGanador');
+        if($request->json('puntosJugador1') != null) {
+            $objPartida->puntosJugador1 = $request->json('puntosJugador1');
+        }
+        if($request->json('puntosJugador2') != null) {
+            $objPartida->puntosJugador2 = $request->json('puntosJugador2');
         }
         try {
             $objPartida->save();

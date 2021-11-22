@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Torneo;
+use App\Models\TorneoHasJugador;
 use Dotenv\Validator;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class TorneoController extends Controller
         catch (\Exception $e) {
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
         }
-        return response()->json(['Response' => true, 'Torneos' => $listaTorneos]);
+        return response()->json(['Response' => true, 'Length' => count($listaTorneos), 'Torneos' => $listaTorneos]);
     }
 
     public function store(Request $request)
@@ -52,7 +53,7 @@ class TorneoController extends Controller
         } catch (\Exception $e) {
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
         }
-        return response()->json(['Response' => true, 'Torneos' => $objTorneo]);
+        return response()->json(['Response' => true,  'id' => $objTorneo->id, 'Torneos' => $objTorneo]);
     }
 
     public function show($idTorneo)
@@ -78,7 +79,7 @@ class TorneoController extends Controller
         } catch (\Exception $e) {
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
         }
-        return response()->json(['Response' => true, 'Torneos' => $query]);
+        return response()->json(['Response' => true, 'Length' => count($query), 'Torneos' => $query]);
     }
 
     public function update(Request $request, $idTorneo) {
@@ -135,6 +136,13 @@ class TorneoController extends Controller
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
         }
         return response()->json(['Response' => true]);
+    }
+
+    public function participantes($idTorneo)
+    {
+        $objTorneo = Torneo::find($idTorneo);
+        $listaParticipantes = TorneoHasJugador::where('idTorneo', $idTorneo)->get();
+        return response()->json(['Response' => true, 'Length' => count($listaParticipantes),'Participantes' => $listaParticipantes]);
     }
 
 }

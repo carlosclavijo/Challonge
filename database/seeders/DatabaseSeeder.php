@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UsuarioSeeder::class);
         $this->call(TorneoSeeder::class);
         $this->call(RondaSeeder::class);
+        $this->call(TorneoJugadorSeeder::class);
     }
 }

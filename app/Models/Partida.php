@@ -14,6 +14,7 @@ class Partida extends Model
         'idRonda',
         'idJugador1',
         'idJugador2',
-        'idGanador'
+        'puntosJugador1',
+        'puntosJugador2'
     ];
 }

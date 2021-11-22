@@ -15,14 +15,15 @@ class TorneoJugadorController extends Controller
         catch (\Exception $e) {
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
         }
-        return response()->json(['Response' => true, 'TorneoHasJugadors' => $listaTorneoJugadors]);
+        return response()->json(['Response' => true, 'Length' => count($listaTorneoJugadors), 'TorneoHasJugadors' => $listaTorneoJugadors]);
     }
 
     public function store(Request $request)
     {
         $validator = \Validator::make($request->json()->all(), [
             'idTorneo' => ['required', 'integer'],
-            'idUser' => ['required', 'integer']
+            'idUser' => ['integer'],
+            'nombre' => ['required', 'string']
         ]);
         if($validator->fails()) {
             return response()->json(["Response" => false, "validator" => $validator->messages()]);
@@ -30,12 +31,19 @@ class TorneoJugadorController extends Controller
         $objTorneoJugador = new TorneoHasJugador();
         $objTorneoJugador->idTorneo = $request->json('idTorneo');
         $objTorneoJugador->idUser =  $request->json('idUser');
+        $objTorneoJugador->nombre =  $request->json('nombre');
+        $listaTorneoJugadors = TorneoHasJugador::all();
+        foreach ($listaTorneoJugadors as $tj) {
+            if($objTorneoJugador->idTorneo == $tj->idTorneo && $objTorneoJugador->idUser == $tj->idUser) {
+                return response()->json(['Response' => false, 'Message' => 'Este jugador ya fue registrado en este torneo previamente']);
+            }
+        }
         try {
             $objTorneoJugador->save();
         } catch (\Exception $e) {
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
         }
-        return response()->json(['Response' => true, 'TorneoJugadors' => $objTorneoJugador]);
+        return response()->json(['Response' => true,  'id' => $objTorneoJugador->id, 'TorneoJugadors' => $objTorneoJugador]);
     }
 
     public function show($idTorneoJugador)

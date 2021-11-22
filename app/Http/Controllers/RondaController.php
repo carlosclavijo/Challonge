@@ -16,7 +16,7 @@ class RondaController extends Controller
         catch (\Exception $e) {
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
         }
-        return response()->json(['Response' => true, 'Rondas' => $listaRondas]);
+        return response()->json(['Response' => true, 'Length' => count($listaRondas), 'Rondas' => $listaRondas]);
     }
 
     public function store(Request $request)
@@ -40,7 +40,7 @@ class RondaController extends Controller
         } catch (\Exception $e) {
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
         }
-        return response()->json(['Response' => true, 'Rondas' => $objRonda]);
+        return response()->json(['Response' => true,  'id' => $objRonda->id, 'Rondas' => $objRonda]);
     }
 
     public function show($idRonda)

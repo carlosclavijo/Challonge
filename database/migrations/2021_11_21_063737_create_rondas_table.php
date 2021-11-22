@@ -17,8 +17,8 @@ class CreateRondasTable extends Migration
             $table->id();
             $table->bigInteger("idTorneo")->unsigned();
             $table->foreign("idTorneo")->references("id")->on("torneos")->onDelete("cascade");
-            $table->dateTime("fechaHoraInicio");
-            $table->dateTime("fechaHoraFin");
+            $table->dateTime("fechaHoraInicio")->nullable();
+            $table->dateTime("fechaHoraFin")->nullable();
             $table->integer("nroRonda");
             $table->timestamps();
         });

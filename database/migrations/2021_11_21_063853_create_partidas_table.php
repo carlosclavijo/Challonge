@@ -23,8 +23,8 @@ class CreatePartidasTable extends Migration
             $table->foreign("idJugador1")->references("id")->on("users")->onDelete("cascade");
             $table->bigInteger("idJugador2")->unsigned();
             $table->foreign("idJugador2")->references("id")->on("users")->onDelete("cascade");
-            $table->bigInteger("idGanador")->unsigned();
-            $table->foreign("idGanador")->references("id")->on("users")->onDelete("cascade");
+            $table->float("puntosJugador1")->default(0);
+            $table->float("puntosJugador2")->default(0);
             $table->timestamps();
         });
     }

@@ -17,8 +17,9 @@ class CreateTorneoHasJugadorsTable extends Migration
             $table->id();
             $table->bigInteger("idTorneo")->unsigned();
             $table->foreign("idTorneo")->references("id")->on("torneos")->onDelete("cascade");
-            $table->bigInteger("idUser")->unsigned();
+            $table->bigInteger("idUser")->unsigned()->nullable();
             $table->foreign("idUser")->references("id")->on("users")->onDelete("cascade");
+            $table->string("nombre");
             $table->timestamps();
         });
     }

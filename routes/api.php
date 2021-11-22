@@ -40,6 +40,7 @@ Route::get('/torneos/search/{valor}', [TorneoController::class, 'search']);
 Route::post('/torneos', [TorneoController::class, 'store']);
 Route::put('/torneos/{id}', [TorneoController::class, 'update']);
 Route::delete('/torneos/{id}', [TorneoController::class, 'destroy']);
+Route::get('/torneos/participantes/{id}', [TorneoController::class, 'participantes']);
 
 //Ronda
 Route::get('/ronda', [RondaController::class, 'index']);
