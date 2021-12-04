@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Torneo;
 use App\Models\TorneoHasJugador;
-use Dotenv\Validator;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TorneoController extends Controller
@@ -13,6 +13,13 @@ class TorneoController extends Controller
     {
         try {
             $listaTorneos = Torneo::all();
+            foreach ($listaTorneos as $item) {
+                $item->nombreCreador = User::find($item->idCreador)->name;
+                $item->modalidadNombre = $this->modalidad($item->modalidad);
+                $item->estadoNombre = $this->estado($item->estado);
+                $item->fechaInicio = $this->fechaHora($item->fechaHoraInicio);
+                $item->fechaFin = $this->fechaHora($item->fechaHoraFin);
+            }
         }
         catch (\Exception $e) {
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
@@ -25,13 +32,13 @@ class TorneoController extends Controller
         $validator = \Validator::make($request->json()->all(), [
             'nombre' => ['required', 'string'],
             'videojuego' => ['required', 'string'],
-            'modalidad' => ['required', 'integer'],
-            'fechaHoraInicio' => ['required', 'date'],
-            'fechaHoraFin' => ['required', 'date'],
-            'estado' => ['required', 'integer'],
+            'modalidad' => ['required', 'integer', 'min:0', 'max:2'],
+            'fechaHoraInicio' => ['date'],
+            'fechaHoraFin' => ['date'],
+            'estado' => ['required', 'integer', 'min:0', 'max:3'],
             'puntuacionVictoria' => ['required', 'integer'],
             'puntuacionEmpate' => ['required', 'integer'],
-            'puntuacionDerrota' => ['required', 'integer'],
+            'puntuacionDerrota' => [ 'integer'],
             'idCreador' => ['required', 'integer']
         ]);
         if($validator->fails()) {
@@ -66,7 +73,7 @@ class TorneoController extends Controller
         } catch (\Exception $e) {
             return response()->json(['Response' => false, 'Message' => 'Se ha producido un error']);
         }
-        return response()->json(['Response' => true, 'Torneo' => $objTorneo]);
+        return response()->json($objTorneo);
     }
 
     public function search($valor)
@@ -140,9 +147,110 @@ class TorneoController extends Controller
 
     public function participantes($idTorneo)
     {
-        $objTorneo = Torneo::find($idTorneo);
         $listaParticipantes = TorneoHasJugador::where('idTorneo', $idTorneo)->get();
         return response()->json(['Response' => true, 'Length' => count($listaParticipantes),'Participantes' => $listaParticipantes]);
+    }
+
+    private function modalidad($modalidad)
+    {
+        if ($modalidad == 0) {
+            return "Rondas Suizas";
+        } else if ($modalidad == 1) {
+            return "Eliminación Directa";
+        } else if ($modalidad == 2) {
+            return "Round Robin";
+        } else {
+            return "Error";
+        }
+    }
+
+    private function estado($estado)
+    {
+        if ($estado == 0) {
+            return "Creado";
+        } else if ($estado == 1) {
+            return "Registro Abiero";
+        } else if ($estado == 2) {
+            return "Iniciado";
+        } else if ($estado == 3) {
+            return "Finalizado";
+        } else {
+            return "Error";
+        }
+    }
+
+    private function fechaHora($d)
+    {
+        $timestamp = strtotime($d);
+        $dia = date('d', $timestamp);
+        $diaSemana = date('N', $timestamp);
+        switch ($diaSemana) {
+            case 1:
+                $diaSemana = "Lunes";
+                break;
+            case 2:
+                $diaSemana = "Martes";
+                break;
+            case 3:
+                $diaSemana = "Miércoles";
+                break;
+            case 4:
+                $diaSemana = "Jueves";
+                break;
+            case 5:
+                $diaSemana = "Viernes";
+                break;
+            case 6:
+                $diaSemana = "Sábado";
+                break;
+            case 7:
+                $diaSemana = "Domingo";
+                break;
+        }
+        $mes = date('m', $timestamp);
+        switch ($mes) {
+            case 1:
+                $mes = "enero";
+                break;
+            case 2:
+                $mes = "febrero";
+                break;
+            case 3:
+                $mes = "marzo";
+                break;
+            case 4:
+                $mes = "abril";
+                break;
+            case 5:
+                $mes = "mayo";
+                break;
+            case 6:
+                $mes = "junio";
+                break;
+            case 7:
+                $mes = "julio";
+                break;
+            case 8:
+                $mes = "agosto";
+                break;
+            case 9:
+                $mes = "septiembre";
+                break;
+            case 10:
+                $mes = "octubre";
+                break;
+            case 11:
+                $mes = "noviembre";
+                break;
+            case 12:
+                $mes = "diciembre";
+                break;
+        }
+        $anio = date('Y', $timestamp);
+        $hora = date('H', $timestamp);
+        $minutos = date('i', $timestamp);
+        $segundos = date('s', $timestamp);
+        return $diaSemana.' '.$dia.' '.$mes.' del '.$anio.' a las '.$hora.':'.$minutos.':'.$segundos;
     }
 
 }

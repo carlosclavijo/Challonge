@@ -6,6 +6,7 @@ use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\TorneoController;
 use \App\Http\Controllers\RondaController;
 use \App\Http\Controllers\PartidaController;
+use \App\Http\Controllers\PruebaController;
 use \App\Http\Controllers\TorneoJugadorController;
 
 /*
@@ -41,6 +42,7 @@ Route::post('/torneos', [TorneoController::class, 'store']);
 Route::put('/torneos/{id}', [TorneoController::class, 'update']);
 Route::delete('/torneos/{id}', [TorneoController::class, 'destroy']);
 Route::get('/torneos/participantes/{id}', [TorneoController::class, 'participantes']);
+Route::post('/prueba', [TorneoController::class, 'prueba']);
 
 //Ronda
 Route::get('/ronda', [RondaController::class, 'index']);

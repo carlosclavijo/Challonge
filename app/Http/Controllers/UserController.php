@@ -21,7 +21,7 @@ class UserController extends Controller
         }catch (\Exception $e){
             return response()->json(['res'=>false,'message'=>'hubo un error'], 500);
         }
-        return response()->json(['res'=>true, 'usuarios'=> $listUsuario], 200);
+        return response()->json($listUsuario);
     }
 
     /**
@@ -80,7 +80,7 @@ class UserController extends Controller
         }catch (\Exception $e){
             return response()->json(['res'=>false,'message'=>'hubo un error'], 500);
         }
-        return response()->json(['res'=>true, 'usuario'=> $objUsuario], 200);
+        return response()->json([$objUsuario]);
 
     }
 
